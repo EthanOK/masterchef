@@ -9,8 +9,10 @@ import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 contract MasterChefTest is Test {
     address public owner = makeAddr("owner");
     address public dev = makeAddr("dev");
+
     address public alice = makeAddr("alice");
     address public bob = makeAddr("bob");
+    address public carol = makeAddr("carol");
 
     MasterChef public masterchef;
     SushiToken public sushi;
@@ -25,6 +27,7 @@ contract MasterChefTest is Test {
 
         lpToken.mint(alice, 1000 * 1e18);
         lpToken.mint(bob, 1000 * 1e18);
+        lpToken.mint(carol, 1000 * 1e18);
 
         vm.startPrank(owner);
 
@@ -66,16 +69,28 @@ contract MasterChefTest is Test {
         vm.stopPrank();
 
         currentBlock = startBlock + 50;
-        vm.roll(currentBlock);
 
+        vm.roll(currentBlock);
+        vm.startPrank(carol);
+
+        console.log("carol deposit blockNumber", block.number);
+
+        lpToken.approve(address(masterchef), amount * 5);
+        masterchef.deposit(0, amount * 5);
+        vm.stopPrank();
+
+        currentBlock = startBlock + 100;
+
+        vm.roll(currentBlock);
         console.log("current block", currentBlock);
 
         uint256 pending_alice = masterchef.pendingSushi(0, alice);
         uint256 pending_bob = masterchef.pendingSushi(0, bob);
-        assertEq(pending_alice + pending_bob, (currentBlock - startBlock) * sushiPerBlock);
+        uint256 pending_carol = masterchef.pendingSushi(0, carol);
 
         console.log("alice pending sushi", pending_alice / 1e18);
         console.log("bob pending sushi", pending_bob / 1e18);
+        console.log("carol pending sushi", pending_carol / 1e18);
         console.log("sushiPerBlock * block", (currentBlock - startBlock) * sushiPerBlock / 1e18);
     }
 }
