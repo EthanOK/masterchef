@@ -1,5 +1,5 @@
 # Counter
-[Git Source](https://github.com/EthanOK/masterchef/blob/66ee9da5c8a4122f27d3c9f37cd6daa38e1ce310/src/Counter.sol)
+[Git Source](https://github.com/EthanOK/masterchef/blob/6f52a8531afe696666dfd399f752a276352b27de/src/Counter.sol)
 
 
 ## State Variables

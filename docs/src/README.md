@@ -1,5 +1,7 @@
 # MasterChef
 
+[MasterChef Docs](./docs/src/src/MasterChef.sol/contract.MasterChef.md)
+
 ## update pool
 
 ```solidity
